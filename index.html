@@ -18,6 +18,7 @@
       </a>
       <nav class="nav" aria-label="页面导航">
         <a href="#reader">读文</a>
+        <a href="#library">文库</a>
         <a href="#generator">生成器</a>
         <a href="#map">文体图谱</a>
       </nav>
@@ -65,6 +66,38 @@
           </label>
           <button class="primary-button" type="button" data-generate>生成阅读组件</button>
         </aside>
+      </section>
+
+      <section class="library" id="library">
+        <div class="library-heading">
+          <p class="eyebrow">Archive search</p>
+          <h2>昭明文选篇目库</h2>
+          <p>输入篇名、作者、文体或关键词，文库会即时筛出相关篇章。先放一批常见选篇作为演示数据，后面可以继续扩充成完整数据库。</p>
+        </div>
+
+        <div class="search-shell" role="search">
+          <label for="article-search">检索文选</label>
+          <div class="search-row">
+            <input id="article-search" type="search" data-search placeholder="例如：洛神赋、曹植、赋、古诗、陈情">
+            <button type="button" data-clear-search>清空</button>
+          </div>
+          <div class="search-tags" aria-label="快捷搜索">
+            <button type="button" data-search-chip="赋">赋</button>
+            <button type="button" data-search-chip="诗">诗</button>
+            <button type="button" data-search-chip="曹植">曹植</button>
+            <button type="button" data-search-chip="表">表</button>
+            <button type="button" data-search-chip="序">序</button>
+          </div>
+        </div>
+
+        <div class="library-layout">
+          <div class="article-list" data-results aria-live="polite"></div>
+          <article class="article-detail" data-detail>
+            <span>当前篇目</span>
+            <h3>洛神赋</h3>
+            <p>以铺陈、想象和辞采见长，适合做逐段赏析、意象地图和注释侧栏。</p>
+          </article>
+        </div>
       </section>
 
       <section class="generator" id="generator">
