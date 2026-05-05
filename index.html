@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="萧统《文选》的 vibe coding 网页版：用古典文学资料生成阅读、注释和数字人文界面。">
+    <title>昭明文选 Vibe Coding</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#reader" aria-label="回到《文选》工作台">
+        <span class="brand-mark">文</span>
+        <span>昭明文选 Vibe Coding</span>
+      </a>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#reader">读文</a>
+        <a href="#generator">生成器</a>
+        <a href="#map">文体图谱</a>
+      </nav>
+      <button class="ghost-button" type="button" data-quick-fill>换一篇</button>
+    </header>
+
+    <main>
+      <section class="reader" id="reader">
+        <img class="reader-bg" src="assets/wenxuan-hero.png" alt="古典书斋中，书卷与现代代码界面相互叠合。">
+        <div class="reader-shade"></div>
+
+        <section class="hero-copy" aria-labelledby="app-title">
+          <p class="eyebrow">Xiao Tong · Wen Xuan · digital humanities</p>
+          <h1 id="app-title">把《文选》读成一个可以生成网页的文本宇宙。</h1>
+          <p class="lede">以萧统所编《文选》为核心，把篇目、文体、注释、赏析和界面组件放在同一个工作台里。选一类文体，写一句目标，即可生成阅读页方案。</p>
+
+          <div class="classic-card" aria-label="当前选篇">
+            <div class="classic-head">
+              <span data-current-genre>赋</span>
+              <strong data-current-title>洛神赋</strong>
+            </div>
+            <p data-current-note>以铺陈、想象和辞采见长，适合做“逐段赏析 + 意象地图 + 注释侧栏”的阅读界面。</p>
+          </div>
+        </section>
+
+        <aside class="control-panel" aria-label="文选控制台">
+          <div class="panel-head">
+            <span>文体</span>
+            <strong data-active-mode>赋</strong>
+          </div>
+          <div class="mode-options" role="group" aria-label="选择文体">
+            <button class="is-active" type="button" data-mode="赋">赋</button>
+            <button type="button" data-mode="诗">诗</button>
+            <button type="button" data-mode="表">表</button>
+            <button type="button" data-mode="书">书</button>
+            <button type="button" data-mode="序">序</button>
+          </div>
+          <label class="range-label">
+            <span>注释密度</span>
+            <input type="range" min="1" max="5" value="4" data-density>
+          </label>
+          <label class="range-label">
+            <span>代码感</span>
+            <input type="range" min="1" max="5" value="3" data-code-vibe>
+          </label>
+          <button class="primary-button" type="button" data-generate>生成阅读组件</button>
+        </aside>
+      </section>
+
+      <section class="generator" id="generator">
+        <div class="prompt-panel">
+          <div class="prompt-head">
+            <span>Prompt</span>
+            <span data-clock>--:--</span>
+          </div>
+          <textarea data-prompt rows="5">给《文选》做一个网页阅读器：左边原文，右边注释和赏析，下方显示文体、时代、作者和关键词。</textarea>
+          <div class="chips" aria-label="快捷生成方向">
+            <button type="button" data-chip="加入逐句注释、典故解释和现代白话提示。">注释增强</button>
+            <button type="button" data-chip="加入文体分类、篇目索引和作者时间线。">文体索引</button>
+            <button type="button" data-chip="加入代码式卡片、JSON 数据结构和组件拆分。">代码拆分</button>
+          </div>
+        </div>
+
+        <div class="output-grid" aria-label="生成结果">
+          <article class="result-card">
+            <span class="result-label">阅读结构</span>
+            <ul data-structure>
+              <li>顶部：篇名、作者、文体、选本位置</li>
+              <li>正文：原文分段阅读，重点句可点击</li>
+              <li>侧栏：注释、白话、意象和相关篇目</li>
+            </ul>
+          </article>
+          <article class="result-card">
+            <span class="result-label">交互方式</span>
+            <p data-interaction>点击原文句子，侧栏同步显示注释；文体按钮会改变页面的阅读节奏和视觉密度。</p>
+          </article>
+          <article class="code-card">
+            <div class="code-head">
+              <span>wenxuan-reader.jsx</span>
+              <button type="button" data-copy>复制</button>
+            </div>
+            <pre><code data-code>const genre = "赋";
+
+export default function WenXuanReader() {
+  return (
+    &lt;ReaderLayout genre={genre}&gt;
+      &lt;OriginalText /&gt;
+      &lt;AnnotationPanel /&gt;
+    &lt;/ReaderLayout&gt;
+  );
+}</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <section class="map" id="map">
+        <div>
+          <p class="eyebrow">Genre map</p>
+          <h2>从文体进入《文选》，再从文本生成界面。</h2>
+        </div>
+        <div class="genre-list">
+          <button type="button" data-template="围绕《洛神赋》做一个沉浸式阅读页，重点是意象、铺陈和注释联动。">
+            <span>赋</span>
+            <small>铺陈、辞采、意象地图</small>
+          </button>
+          <button type="button" data-template="围绕《古诗十九首》做一个诗歌阅读页，重点是情绪线索、关键词和白话解释。">
+            <span>诗</span>
+            <small>情绪、节奏、关键词</small>
+          </button>
+          <button type="button" data-template="围绕《出师表》做一个表文阅读页，重点是语气、结构和历史背景。">
+            <span>表</span>
+            <small>奏表、结构、语气</small>
+          </button>
+        </div>
+      </section>
+
+      <section class="flow">
+        <p class="eyebrow">Workflow</p>
+        <div class="flow-steps">
+          <article>
+            <span>01</span>
+            <h3>选文体</h3>
+            <p>先确定是赋、诗、表、书还是序，页面节奏会随文体改变。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>定读法</h3>
+            <p>选择注释密度、白话程度和是否需要数字人文图谱。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>生成组件</h3>
+            <p>把古典阅读需求转成可开发的前端结构和数据模型。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>昭明文选 Vibe Coding</span>
+      <span>古典文本，也可以被设计成好用的界面。</span>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
