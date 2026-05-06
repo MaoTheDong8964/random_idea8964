@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="昭明文选作者作品 3D 图谱，一个独立的文学地图网站。">
+    <title>昭明文选 3D 作者图谱</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="atlas-shell">
+      <canvas id="author-map" aria-label="昭明文选作者作品 3D 图谱"></canvas>
+      <div class="flat-map" data-flat-map aria-hidden="true"></div>
+      <div class="label-layer" data-label-layer></div>
+      <section class="atlas-panel" aria-label="图谱控制台">
+        <p class="kicker">Wen Xuan 3D Atlas</p>
+        <h1>昭明文选作者作品图谱</h1>
+        <p class="intro">每个星点是一位作者，大小代表当前样本中的作品数量。拖动旋转，滚轮缩放，点击星点查看作品。</p>
+        <div class="search-row">
+          <input type="search" data-search placeholder="搜索作者 / 作品 / 朝代">
+          <button type="button" data-reset>重置</button>
+        </div>
+        <div class="stats">
+          <span><strong data-author-count>0</strong> 作者</span>
+          <span><strong data-work-count>0</strong> 作品</span>
+        </div>
+        <article class="detail" data-detail>
+          <span>当前选中</span>
+          <h2>曹植</h2>
+          <p>魏晋文学星群中的高亮节点。</p>
+        </article>
+      </section>
+      <aside class="work-dock" aria-label="作品列表">
+        <div class="dock-head">
+          <span>作品</span>
+          <strong data-active-author>曹植</strong>
+        </div>
+        <div class="work-list" data-work-list></div>
+      </aside>
+      <div class="fallback" data-fallback hidden></div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
