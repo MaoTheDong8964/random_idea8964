@@ -20,7 +20,7 @@
         <a href="#reader">读文</a>
         <a href="#library">文库</a>
         <a href="#generator">生成器</a>
-        <a href="#map">文体图谱</a>
+        <a href="#map">3D图谱</a>
       </nav>
       <button class="ghost-button" type="button" data-quick-fill>换一篇</button>
     </header>
@@ -70,21 +70,23 @@
 
       <section class="library" id="library">
         <div class="library-heading">
-          <p class="eyebrow">Archive search</p>
-          <h2>昭明文选篇目库</h2>
-          <p>输入篇名、作者、文体或关键词，文库会即时筛出相关篇章。先放一批常见选篇作为演示数据，后面可以继续扩充成完整数据库。</p>
+          <p class="eyebrow">Poetry search engine</p>
+          <h2>诗文搜索引擎</h2>
+          <p>输入篇名、作者、文体、关键词或原文片段，先搜本地诗文库；若没有命中，可以一键跳到 Google 全网检索。后续可接入 Google Custom Search、国学数据库或自己的全文 API。</p>
         </div>
 
         <div class="search-shell" role="search">
-          <label for="article-search">检索文选</label>
+          <label for="article-search">检索诗文</label>
           <div class="search-row">
-            <input id="article-search" type="search" data-search placeholder="例如：洛神赋、曹植、赋、古诗、陈情">
+            <input id="article-search" type="search" data-search placeholder="例如：青青子衿、洛神赋、曹植、人生几何、陈情">
             <button type="button" data-clear-search>清空</button>
+            <button type="button" data-google-search>Google 搜索</button>
           </div>
           <div class="search-tags" aria-label="快捷搜索">
             <button type="button" data-search-chip="赋">赋</button>
             <button type="button" data-search-chip="诗">诗</button>
             <button type="button" data-search-chip="曹植">曹植</button>
+            <button type="button" data-search-chip="青青子衿">青青子衿</button>
             <button type="button" data-search-chip="表">表</button>
             <button type="button" data-search-chip="序">序</button>
           </div>
@@ -148,10 +150,15 @@ export default function WenXuanReader() {
 
       <section class="map" id="map">
         <div>
-          <p class="eyebrow">Genre map</p>
-          <h2>从文体进入《文选》，再从文本生成界面。</h2>
+          <p class="eyebrow">3D author atlas</p>
+          <h2>作者作品 3D 图谱</h2>
+          <p class="map-copy">每个节点代表一位作者，节点越大表示当前库中收录作品越多；点击搜索结果会同步高亮作者。这个图谱之后可以扩展成按朝代、地点、文体和影响关系生成的 3D 文学地图。</p>
         </div>
-        <div class="genre-list">
+        <div class="author-map-shell">
+          <canvas data-author-map aria-label="作者作品 3D 图谱"></canvas>
+          <div class="map-fallback" data-map-fallback>正在加载 3D 图谱...</div>
+        </div>
+        <div class="genre-list" data-author-list>
           <button type="button" data-template="围绕《洛神赋》做一个沉浸式阅读页，重点是意象、铺陈和注释联动。">
             <span>赋</span>
             <small>铺陈、辞采、意象地图</small>
@@ -194,6 +201,7 @@ export default function WenXuanReader() {
       <span>古典文本，也可以被设计成好用的界面。</span>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
