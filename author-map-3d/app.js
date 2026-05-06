@@ -74,6 +74,10 @@ const detail = document.querySelector("[data-detail]");
 const activeAuthor = document.querySelector("[data-active-author]");
 const workList = document.querySelector("[data-work-list]");
 const search = document.querySelector("[data-search]");
+const searchResults = document.querySelector("[data-search-results]");
+const openFirstButton = document.querySelector("[data-open-first]");
+let currentMatches = works;
+let currentOpenUrl = works[0].url;
 
 document.querySelector("[data-author-count]").textContent = grouped.length;
 document.querySelector("[data-work-count]").textContent = works.length;
@@ -214,25 +218,67 @@ function bindControls() {
     }
   });
 
-  search.addEventListener("input", () => {
-    const query = search.value.trim().toLowerCase();
-    const filtered = grouped.filter((author) => {
-      const haystack = [author.author, author.dynasty, ...author.works.map((work) => `${work.title} ${work.genre}`)].join(" ").toLowerCase();
-      return !query || haystack.includes(query);
-    });
-    buildNodes(filtered.length ? filtered : grouped);
-    addRings();
-    if (filtered[0]) {
-      selectAuthor(filtered[0].author);
+  search.addEventListener("input", applySearch);
+
+  search.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && currentOpenUrl) {
+      event.preventDefault();
+      window.location.href = currentOpenUrl;
+    }
+  });
+
+  openFirstButton.addEventListener("click", () => {
+    if (currentOpenUrl) {
+      window.location.href = currentOpenUrl;
     }
   });
 
   document.querySelector("[data-reset]").addEventListener("click", () => {
     search.value = "";
-    buildNodes(grouped);
-    addRings();
+    applySearch();
     selectAuthor("曹植");
   });
+}
+
+function matchWorks(query = "") {
+  const normalized = query.trim().toLowerCase();
+  if (!normalized) {
+    return works.filter((work) => work.author === selectedAuthor);
+  }
+  return works.filter((work) => `${work.author} ${work.dynasty} ${work.title} ${work.genre}`.toLowerCase().includes(normalized));
+}
+
+function applySearch() {
+  const query = search.value.trim();
+  const matches = matchWorks(query);
+  const authorSet = new Set(matches.map((work) => work.author));
+  const filtered = query ? grouped.filter((author) => authorSet.has(author.author)) : grouped;
+
+  buildNodes(filtered.length ? filtered : grouped);
+  addRings();
+  renderSearchResults(query, matches);
+
+  if (matches[0]) {
+    selectAuthor(matches[0].author);
+  }
+}
+
+function renderSearchResults(query = "", matches = matchWorks(query)) {
+  currentMatches = matches;
+  const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(query + " 昭明文选 原文")}`;
+  currentOpenUrl = matches[0] ? matches[0].url : googleUrl;
+
+  searchResults.innerHTML = matches.slice(0, 8).map((work) => `
+    <a class="search-result" href="${work.url}">
+      <span>《${work.title}》</span>
+      <small>${work.author} · ${work.dynasty} · ${work.genre}</small>
+    </a>
+  `).join("") || `
+    <a class="search-result" href="${googleUrl}">
+      <span>没有本地结果，去 Google 查</span>
+      <small>外部搜索</small>
+    </a>
+  `;
 }
 
 function selectAuthor(author) {
@@ -245,12 +291,15 @@ function selectAuthor(author) {
     <p>${item.works.map((work) => `《${work.title}》`).join("、")}</p>
   `;
   workList.innerHTML = item.works.map((work) => `
-    <a class="work-item" href="${work.url}" target="_blank" rel="noopener">
+    <a class="work-item" href="${work.url}">
       <span>${work.title}</span>
       <small>${work.genre}</small>
     </a>
   `).join("");
   renderFlatMap(visibleAuthors);
+  if (!search.value.trim()) {
+    renderSearchResults("");
+  }
 }
 
 function resize() {
@@ -284,7 +333,7 @@ function updateLabels() {
     label.style.left = `${x}px`;
     label.style.top = `${y}px`;
     label.style.opacity = vector.z < 1 ? "1" : "0";
-    label.style.color = mesh.userData.author === selectedAuthor ? "var(--gold)" : "rgba(248, 238, 217, 0.82)";
+    label.style.color = mesh.userData.author === selectedAuthor ? "#a54231" : "rgba(49, 34, 20, 0.86)";
   });
 }
 
