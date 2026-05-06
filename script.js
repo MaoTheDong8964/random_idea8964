@@ -195,6 +195,10 @@ function renderDetail(article) {
     <div class="article-meta">
       ${article.keywords.map((keyword) => `<em>${keyword}</em>`).join("")}
     </div>
+    <div class="article-actions">
+      <a href="${buildExternalSearchUrl(article)}" target="_blank" rel="noopener">阅读全文 / 相关资料</a>
+      <a class="secondary-action" href="${buildExternalSearchUrl(article, "赏析 注释")}" target="_blank" rel="noopener">查注释赏析</a>
+    </div>
   `;
 }
 
@@ -216,7 +220,7 @@ function renderLibrary(query = "", selectedTitle = currentTitle.textContent) {
 
   resultsContainer.innerHTML = filtered.length
     ? filtered.map((article) => `
-      <button class="article-card ${article.title === selectedTitle ? "is-selected" : ""}" type="button" data-article="${article.title}">
+      <article class="article-card ${article.title === selectedTitle ? "is-selected" : ""}">
         <small>${article.dynasty} · ${article.genre} · ${article.author}</small>
         <strong>${article.title}</strong>
         <p>${article.summary}</p>
@@ -224,9 +228,14 @@ function renderLibrary(query = "", selectedTitle = currentTitle.textContent) {
         <span class="article-meta">
           ${article.keywords.slice(0, 4).map((keyword) => `<em>${keyword}</em>`).join("")}
         </span>
-      </button>
+        <div class="article-actions">
+          <button type="button" data-article="${article.title}">查看详情</button>
+          <a href="${buildExternalSearchUrl(article)}" target="_blank" rel="noopener">阅读全文</a>
+          <a class="secondary-action" href="${buildExternalSearchUrl(article, "相关研究")}" target="_blank" rel="noopener">相关内容</a>
+        </div>
+      </article>
     `).join("")
-    : `<article class="article-card"><strong>未找到篇目</strong><p>可以试试搜索“赋”“诗”“曹植”“陈情”“序”。</p></article>`;
+    : `<article class="article-card"><strong>本地库未收录</strong><p>这个版本不会假装已经拥有全库。可以直接用 Google 查「${query || "昭明文选"}」的原文、注释和相关内容。</p><div class="article-actions"><a href="${buildQuerySearchUrl(query || "昭明文选 原文")}" target="_blank" rel="noopener">Google 全网检索</a></div></article>`;
 
   resultsContainer.querySelectorAll("[data-article]").forEach((button) => {
     button.addEventListener("click", () => {
@@ -234,6 +243,14 @@ function renderLibrary(query = "", selectedTitle = currentTitle.textContent) {
       selectArticle(article);
     });
   });
+}
+
+function buildExternalSearchUrl(article, extra = "原文") {
+  return buildQuerySearchUrl(`${article.title} ${article.author} 昭明文选 ${extra}`);
+}
+
+function buildQuerySearchUrl(query) {
+  return `${googleBase}${encodeURIComponent(query)}`;
 }
 
 function highlightSnippet(content, query) {
@@ -294,7 +311,7 @@ function renderAuthorList() {
 function runGoogleSearch() {
   const query = searchInput.value.trim() || currentTitle.textContent || "昭明文选";
   const fullQuery = `${query} 昭明文选 原文`;
-  window.open(`${googleBase}${encodeURIComponent(fullQuery)}`, "_blank", "noopener");
+  window.open(buildQuerySearchUrl(fullQuery), "_blank", "noopener");
 }
 
 function buildResult() {

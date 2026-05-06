@@ -424,6 +424,36 @@ input[type="range"] {
   transform: translateY(-2px);
 }
 
+.article-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.article-actions a,
+.article-actions button {
+  align-items: center;
+  background: var(--ink);
+  border: 0;
+  border-radius: 8px;
+  color: var(--paper-strong);
+  display: inline-flex;
+  font-weight: 900;
+  min-height: 38px;
+  padding: 0 12px;
+}
+
+.article-actions a {
+  background: var(--cinnabar);
+}
+
+.article-actions button.secondary-action,
+.article-actions a.secondary-action {
+  background: #e7dcc7;
+  color: #3a3026;
+}
+
 .article-card strong,
 .article-detail h3 {
   color: var(--cinnabar);
