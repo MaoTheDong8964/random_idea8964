@@ -72,7 +72,7 @@
         <div class="library-heading">
           <p class="eyebrow">Poetry search engine</p>
           <h2>诗文搜索引擎</h2>
-          <p>这里的本地库只是精选缓存，不假装已经收完整部《文选》。输入篇名、作者、文体、关键词或原文片段后，站内先给出已收录结果；每篇都可以跳到 Google 查原文和相关资料，未收录的篇目也能直接外部检索。</p>
+          <p>这里已接入维基文库《昭明文选》诗部索引，另保留少量本地精选摘录。输入篇名、作者、文体、关键词或原文片段后，站内先给出已收录结果；每篇都可以跳到公开来源查原文，未收录的篇目也能直接外部检索。</p>
         </div>
 
         <div class="search-shell" role="search">
@@ -202,6 +202,7 @@ export default function WenXuanReader() {
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script src="data/wenxuan-wikisource.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

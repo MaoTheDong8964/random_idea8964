@@ -52,7 +52,7 @@ const prompts = [
   "为《出师表》做一个结构化阅读页，展示段落论证、历史背景和语气变化。",
 ];
 
-const articles = [
+const baseArticles = [
   {
     title: "洛神赋",
     author: "曹植",
@@ -145,6 +145,11 @@ const articles = [
   },
 ];
 
+const importedArticles = window.wenxuanExtraArticles || [];
+const articles = [...baseArticles, ...importedArticles].filter((article, index, all) => {
+  return all.findIndex((item) => item.title === article.title) === index;
+});
+
 const googleBase = "https://www.google.com/search?q=";
 
 function updateClock() {
@@ -191,6 +196,7 @@ function renderDetail(article) {
     <span>${article.dynasty} · ${article.genre}</span>
     <h3>${article.title}</h3>
     <p>${article.author}。${article.summary}</p>
+    ${article.sourceName ? `<p>来源：${article.sourceName}</p>` : ""}
     <blockquote class="article-excerpt">${article.content}</blockquote>
     <div class="article-meta">
       ${article.keywords.map((keyword) => `<em>${keyword}</em>`).join("")}
@@ -246,6 +252,10 @@ function renderLibrary(query = "", selectedTitle = currentTitle.textContent) {
 }
 
 function buildExternalSearchUrl(article, extra = "原文") {
+  if (article.sourceUrl && extra === "原文") {
+    return article.sourceUrl;
+  }
+
   return buildQuerySearchUrl(`${article.title} ${article.author} 昭明文选 ${extra}`);
 }
 
